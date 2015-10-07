@@ -1,5 +1,13 @@
 <html>
+  <head>
+    <meta charset="UTF-8" />
+  </head>
   <body>
-    <script>require('electron-connect').client.create()</script>
+    <div id="container">
+    </div>
+    <script>
+      require('electron-connect').client.create();
+      require('./build/all.js');
+    </script>
   </body>
 </html>
