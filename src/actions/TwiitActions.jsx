@@ -1,7 +1,2 @@
-export default class TwiitActions {
-    pushButton() {
-        console.log("ok")
-    }
-}
-
-export var unko = 1234;
+//
+export var pi = 3.141593;

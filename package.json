@@ -12,14 +12,10 @@
   "author": "tattsun",
   "license": "ISC",
   "devDependencies": {
-    "babel": "^5.8.23",
-    "electron-connect": "^0.3.3",
-    "flux": "^2.1.1",
+    "babelify": "^6.3.0",
+    "browserify": "^11.2.0",
     "gulp": "^3.9.0",
-    "gulp-babel": "^5.2.1",
-    "gulp-concat": "^2.6.0",
-    "gulp-load-plugins": "^1.0.0-rc.1",
-    "gulp-sourcemaps": "^1.6.0",
-    "react": "^0.13.3"
+    "react": "^0.13.3",
+    "vinyl-source-stream": "^1.1.0"
   }
 }

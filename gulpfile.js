@@ -1,9 +1,8 @@
 var gulp = require('gulp');
-var $ = require('gulp-load-plugins')();
 var electron = require('electron-connect').server.create();
-var concat = require('gulp-concat');
-var sourcemaps = require('gulp-sourcemaps');
-var babel = require('gulp-babel');
+var babelify = require('babelify');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream')
 
 var config = {
     srcDir: 'src',
@@ -11,11 +10,10 @@ var config = {
 };
 
 gulp.task('compile', function() {
-    return gulp.src(config.srcDir + '/**/*.{js,jsx}')
-        .pipe(sourcemaps.init())
-        .pipe(babel())
-        .pipe(concat('all.js'))
-        .pipe(sourcemaps.write('.'))
+    return browserify('./src/main.jsx', {debug:true})
+        .transform(babelify)
+        .bundle()
+        .pipe(source('bundle.js'))
         .pipe(gulp.dest(config.buildDir));
 });
 

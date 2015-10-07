@@ -14,9 +14,9 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _actionsTwiitActions = require('./actions/TwiitActions');
+var _test = require('./test');
 
-var _actionsTwiitActions2 = _interopRequireDefault(_actionsTwiitActions);
+var _test2 = _interopRequireDefault(_test);
 
 var Foo = (function (_React$Component) {
     _inherits(Foo, _React$Component);
@@ -41,36 +41,21 @@ var Foo = (function (_React$Component) {
     return Foo;
 })(_react2['default'].Component);
 
-var x = new _actionsTwiitActions2['default']();
-
 var container = document.querySelector('#container');
 _react2['default'].render(_react2['default'].createElement(Foo, null), container);
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+var ppp = 1233;
+exports.ppp = ppp;
+//
+"use strict";
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var TwiitActions = (function () {
-    function TwiitActions() {
-        _classCallCheck(this, TwiitActions);
-    }
-
-    _createClass(TwiitActions, [{
-        key: "pushButton",
-        value: function pushButton() {
-            console.log("ok");
-        }
-    }]);
-
-    return TwiitActions;
-})();
-
-exports["default"] = TwiitActions;
-var unko = 1234;
-exports.unko = unko;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var pi = 3.141593;
+exports.pi = pi;
 //# sourceMappingURL=all.js.map
