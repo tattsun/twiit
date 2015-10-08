@@ -8,7 +8,8 @@ import fs from 'fs'
 import Timeline from './components/Timeline.react'
 import TweetBox from './components/TweetBox.react'
 
-var config = yaml.safeLoad(fs.readFileSync('./config.yml', 'utf8'));
+var userhome = process.env.HOME || process.env.USERPROFILE;
+var config = yaml.safeLoad(fs.readFileSync(userhome + '/.twiit.yml', 'utf8'));
 
 TwitterClient.init({
     consumer_key: config['consumer_key'],
