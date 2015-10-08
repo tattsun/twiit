@@ -1,5 +1,7 @@
 'use strict';
 
+console.log("Starting Process");
+
 var app = require('app');
 var BrowserWindow = require('browser-window');
 
@@ -12,6 +14,8 @@ app.on('window-all-closed', function() {
         app.quit();
     }
 });
+
+console.log("Creating BrowserWindow");
 
 app.on('ready', function() {
     mainWindow = new BrowserWindow({width: 800, height: 600});

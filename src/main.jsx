@@ -1,36 +1,36 @@
 import React from 'react'
+import Twitter from 'twitter'
+import Store from './store/Twitter'
+import Timeline from './components/Timeline'
+import TwiitActions from './actions/TwiitActions'
+import yaml from 'js-yaml'
+import fs from 'fs'
 
-const TextInput = React.createClass({
-    getInitialState() {
-        return {
-            value: this.props.value || ''
-        }
-    },
-    render() {
-        return <input
-                   type="text"
-                   value={this.state.value}
-                   onChange={this._onChange}
-               />
-    },
-    _onChange(event) {
-        this.setState({
-            value: event.target.value
-        });
-        this.props.onSave(event.target.value)
-    }
-})
+var config = yaml.safeLoad(fs.readFileSync('./config.yml', 'utf8'))
+
+var client = new Twitter({
+    consumer_key: config['consumer_key'],
+    consumer_secret: config['consumer_secret'],
+    access_token_key: config['access_token_key'],
+    access_token_secret: config['access_token_secret']
+});
+
+
+client.stream('statuses/filter', {track: 'javascript'}, (stream) => {
+    stream.on('data', (tweet) => {
+        console.log(tweet)
+        TwiitActions.add(tweet)
+    });
+    stream.on('error', (err) => {
+        console.log(err);
+    });
+});
 
 const Foo = React.createClass({
     render() {
         return (
-            <TextInput
-                onSave={this._received}
-            />
+            <Timeline />
         )
-    },
-    _received(event) {
-        console.log(event)
     }
 })
 
