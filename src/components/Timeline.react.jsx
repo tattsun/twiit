@@ -1,8 +1,21 @@
 import React from 'react'
 import TimelineStore from '../store/Twitter'
+var ReactPropTypes = React.PropTypes;
 
-//const Tweet = React.createClass({
-//});
+var Tweet = React.createClass({
+    propType: {
+        user: ReactPropTypes.object
+    },
+    getInitialState() {
+        return {}
+    },
+    render() {
+        return <div className="tweet">
+            <b>{this.props.user.name}</b>:
+            {this.props.tweet.text}
+        </div>
+    }
+})
 
 function getTimelineState() {
     return {
@@ -23,11 +36,15 @@ export default React.createClass({
     render() {
         var tweets = [];
         for(var tweet of this.state.tweets) {
-            tweets.push(<div>{tweet.text}<hr /></div>)
+            tweets.push(
+                <Tweet
+                    user={tweet.user}
+                    tweet={tweet}
+                />
+            )
         }
 
         return <div>
-            <h1>ついったあ〜〜〜〜</h1>
             <div>{tweets}</div>
         </div>
     },

@@ -18,6 +18,6 @@ gulp.task('compile', function() {
 gulp.task('start', ['compile'], function() {
     electron.start();
     gulp.watch(config.srcDir + '/**/*.{js,jsx}', ['compile']);
-    gulp.watch(['index.js'], electron.restart);
-    gulp.watch(['index.html', config.buildDir + '/**/*.{html,js,css}'], electron.reload);
+    gulp.watch(['main.js'], electron.restart);
+    gulp.watch(['index.html', config.buildDir + '/**/*.{html,js,css}', 'style.css'], electron.reload);
 });

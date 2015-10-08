@@ -18,7 +18,13 @@ app.on('window-all-closed', function() {
 console.log("Creating BrowserWindow");
 
 app.on('ready', function() {
-    mainWindow = new BrowserWindow({width: 800, height: 600});
+    mainWindow = new BrowserWindow({width: 320,
+                                    height: 600,
+                                    resizable: false,
+                                    title: "Twiit",
+                                    "web-preferences": {
+                                        "overlay-scrollbars": true
+                                    }});
     mainWindow.loadUrl('file://' + __dirname + '/index.html');
     mainWindow.on('closed', function() {
         mainWindow = null;
