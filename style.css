@@ -5,7 +5,7 @@ body {
     font-family:'Lucida Grande',
     'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3',
     Meiryo, メイリオ, sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     color: #FFF7DB;
 }
 
@@ -15,7 +15,6 @@ body {
 }
 
 .tweet {
-
     width: 304;
     padding: 8px;
     margin: 0;
@@ -23,4 +22,15 @@ body {
     background-color: #424039;
     word-break: break-all;
     word-wrap: break-all;
+    overflow: hidden;
+}
+
+.tweet .profile-pic {
+    float: left;
+    width: 48px;
+}
+
+.tweet .text {
+    float: right;
+    width: 250;
 }

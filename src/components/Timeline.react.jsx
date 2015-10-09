@@ -11,8 +11,15 @@ var Tweet = React.createClass({
     },
     render() {
         return <div className="tweet">
-            <b>{this.props.user.name}</b>:
-            {this.props.tweet.text}
+            <div className="profile-pic">
+            <img
+                src={this.props.user.profile_image_url}
+            />
+            </div>
+            <div className="text">
+                <b>{this.props.user.name}</b>:
+                           {this.props.tweet.text}
+            </div>
         </div>
     }
 })
