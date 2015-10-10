@@ -14,32 +14,35 @@ export default React.createClass({
         return getTweetBoxState()
     },
     componentDidMount() {
-        TweetStore.addChangeListener(this._onChange)
+        TweetStore.addChangeListener(this._onChangeFromStore)
     },
     componentWillUnmount() {
-        TweetStore.removeChangeListener(this._onChange)
+        TweetStore.removeChangeListener(this._onChangeFromStore)
     },
     render() {
         return <div>
         <input
-        id="tweetbox"
-        type="text"
-        value={this.state.status}
-        onChange={this._onChange}
-        onKeyDown={this._onKeyDown}
-        autoFocus={true}
-        placeholder="What's happening?"
+            id="tweetbox"
+            type="text"
+            value={this.state.status}
+            onChange={this._onChange}
+            onKeyDown={this._onKeyDown}
+            autoFocus={true}
+            placeholder="What's happening?"
         />
         </div>
     },
     _onChange(event) {
-        this.setState(getTweetBoxState());
+        this.setState({
+            status: event.target.value
+        });
+    },
+    _onChangeFromStore() {
+        this.setState(getTweetBoxState())
     },
     _onKeyDown(event) {
-        console.log(event);
-        TweetActions.setStatus(event.target.value);
         if(event.keyCode === ENTER_KEY_CODE) {
-            TwitterClient.tweet(this.state.value);
+            TwitterClient.tweet(this.state.status, this.state.in_reply_to_status_id);
             TweetActions.clearTweet()
         }
     }

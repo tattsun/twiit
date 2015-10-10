@@ -23,12 +23,15 @@ class TwitterClient {
         });
     }
 
-    tweet(status) {
-        this.client.post('statuses/update', {status: status}, (err, tweet, response) => {
-            if(err) {
-                console.error(err);
-            }
-        });
+    tweet(status, in_reply_to_status_id) {
+        console.log(in_reply_to_status_id);
+        this.client.post('statuses/update',
+                         {status: status, in_reply_to_status_id: in_reply_to_status_id},
+                         (err, tweet, response) => {
+                             if(err) {
+                                 console.error(err);
+                             }
+                         });
     }
 }
 

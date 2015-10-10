@@ -1,5 +1,6 @@
 import React from 'react'
 import TimelineStore from '../store/Twitter'
+import TweetActions from '../actions/TweetActions'
 var ReactPropTypes = React.PropTypes;
 
 var Tweet = React.createClass({
@@ -10,7 +11,10 @@ var Tweet = React.createClass({
         return {}
     },
     render() {
-        return <div className="tweet">
+        return <div
+                   className="tweet"
+                   onClick={this._onClick}
+               >
             <div className="profile-pic">
             <img
                 src={this.props.user.profile_image_url}
@@ -21,6 +25,13 @@ var Tweet = React.createClass({
                            {this.props.tweet.text}
             </div>
         </div>
+    },
+    _onClick() {
+        var tweetbox = document.getElementById('tweetbox');
+        if (tweetbox != null) {
+            tweetbox.focus();
+        }
+        TweetActions.setReplyTarget(this.props.tweet.id,this.props.user.screen_name);
     }
 })
 

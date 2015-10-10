@@ -17,7 +17,7 @@ class TweetStore extends EventEmitter {
         this.emitChange();
     }
     setReplyTarget(status_id, user_screen_id) {
-        tweet.status = "@" + user_screen_id;
+        tweet.status = "@" + user_screen_id + " ";
         tweet.in_reply_to_status_id = status_id;
         this.emitChange();
     }
@@ -29,7 +29,6 @@ class TweetStore extends EventEmitter {
     getTweet() {
         return tweet;
     }
-
     emitChange() {
         this.emit(CHANGE_EVENT);
     }
@@ -52,7 +51,7 @@ Dispatcher.register((act) => {
         case TweetConstants.SET_REPLY_TARGET:
             store.setReplyTarget(act.status_id, act.user_screen_id);
             break;
-        case TweetConstants.CLEAR_TARGET:
+        case TweetConstants.CLEAR_TWEET:
             store.clearTweet();
             break;
         default:
