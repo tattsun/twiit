@@ -14,7 +14,7 @@ class TimelineStore extends EventEmitter {
 
     add(tweet) {
         timeline.unshift(tweet);
-        while(timeline.length > 10) {
+        while(timeline.length > 40) {
             timeline.pop();
         }
         this.emitChange();

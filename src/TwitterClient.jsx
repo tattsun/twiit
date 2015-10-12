@@ -10,13 +10,22 @@ class TwitterClient {
             access_token_secret: config.access_token_secret
         });
 
+        this.client.get('statuses/home_timeline', {count: 10}, (error, tweets, response) => {
+          if (tweets === null) return;
+
+          tweets.reverse();
+          for(var tweet of tweets) {
+              TwiitActions.add(tweet);
+          }
+        });
+
         this.client.stream('user', {}, (stream) => {
             stream.on('data', (tweet) => {
                 console.log(tweet);
                 if(tweet.text === undefined) {
                     return;
                 }
-                TwiitActions.add(tweet)
+                TwiitActions.add(tweet);
             });
             stream.on('error', (err) => {
                 console.log(err);
@@ -28,7 +37,6 @@ class TwitterClient {
     }
 
     tweet(status, in_reply_to_status_id) {
-        console.log(in_reply_to_status_id);
         this.client.post('statuses/update',
                          {status: status, in_reply_to_status_id: in_reply_to_status_id},
                          (err, tweet, response) => {
