@@ -5,4 +5,6 @@ export default KeyMirror({
   FAVORITE: null,
   RETWEET: null,
   FOLLOW: null,
+
+  SYSTEM_WARNING: null,
 })
