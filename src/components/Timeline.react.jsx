@@ -14,14 +14,19 @@ var Tweet = React.createClass({
         var media = [];
         if (this.props.tweet.entities.media !== undefined) {
           for (var m of this.props.tweet.entities.media) {
+            var imgstyle = {
+              backgroundImage: 'url(' + m.media_url + ')',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center center'
+            };
             media.push(
               <div className="imageContainer">
-                <div className="imageBackground">
                 <a href={m.media_url} target="_blank">
-                <img src={m.media_url}
-                  className="image"/>
+                  <div className="imageBackground"
+                      style={imgstyle}>
+                  </div>
                 </a>
-              </div>
+
               </div>);
           }
         }

@@ -57,9 +57,13 @@ body {
 }
 
 .tweet .imageBackground {
+  width: 284px;
+  height: 100px;
+  display: block;
 }
 
 .tweet .image {
   max-width: 264px;
   height: auto;
+  margin-bottom: 100px;
 }
