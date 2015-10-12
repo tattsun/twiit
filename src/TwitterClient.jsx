@@ -19,21 +19,28 @@ class TwitterClient {
           }
         });
 
-        this.client.stream('user', {}, (stream) => {
-            stream.on('data', (tweet) => {
-                console.log(tweet);
-                if(tweet.text === undefined) {
-                    return;
-                }
-                TwiitActions.add(tweet);
-            });
-            stream.on('error', (err) => {
-                console.log(err);
-            });
-            stream.on('close', () => {
-              init(config);
-            });
-        });
+        this.initStream();
+    }
+
+    initStream() {
+      this.client.stream('user', {}, (stream) => {
+          stream.on('data', (tweet) => {
+              console.log(tweet);
+              if(tweet.text === undefined) {
+                  return;
+              }
+              TwiitActions.add(tweet);
+          });
+          stream.on('favorite', (fav) => {
+            TwiitActions.addFavorite(fav);
+          });
+          stream.on('error', (err) => {
+              console.log(err);
+          });
+          stream.on('end', () => {
+            this.initStream();
+          });
+      });
     }
 
     tweet(status, in_reply_to_status_id) {

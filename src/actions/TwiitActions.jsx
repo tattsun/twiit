@@ -8,6 +8,12 @@ class TwitterActions {
             tweet: tweet
         })
     }
+    addFavorite(fav) {
+      Dispatcher.dispatch({
+        actionType: TwitterConstants.TIMELINE_ADD_FAVORITE,
+        fav: fav
+      })
+    }
 }
 
 export default new TwitterActions()

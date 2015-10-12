@@ -18,7 +18,6 @@ TwitterClient.init({
     access_token_secret: config['access_token_secret']
 });
 
-
 const Main = React.createClass({
     render() {
         return <div>

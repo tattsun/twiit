@@ -1,6 +1,7 @@
 import Dispatcher from '../dispatcher/AppDispatcher'
 import TwitterConstants from '../constants/TwitterConstants'
 import Events from 'events'
+import TweetTypeConstants from '../constants/TweetTypeConstants'
 const EventEmitter = Events.EventEmitter
 
 const CHANGE_EVENT = 'change';
@@ -38,7 +39,12 @@ const store = new TimelineStore();
 Dispatcher.register((act) => {
     switch(act.actionType) {
         case TwitterConstants.TIMELINE_ADD_TWEET:
-            store.add(act.tweet);
+            store.add({type: TweetTypeConstants.TWEET,
+                      tweet: act.tweet});
+            break;
+        case TwitterConstants.TIMELINE_ADD_FAVORITE:
+            store.add({type: TweetTypeConstants.FAVORITE,
+                      fav: act.fav});
             break;
         default:
     }

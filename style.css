@@ -27,7 +27,7 @@ body {
   background-color: #7A776A;
 }
 
-.tweet {
+.timelineEvent {
     width: 304;
     padding: 8px;
     margin: 0;
@@ -74,4 +74,23 @@ body {
   max-width: 264px;
   height: auto;
   margin-bottom: 100px;
+}
+
+.quotedTweet {
+  background-color: #736F61;
+  margin: 5px;
+  padding: 5px;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  padding-left: 18px;
+  display: inline;
+  background-repeat: no-repeat;
+}
+
+.icon.icon-favorite-on {
+  background-image: url(./img/favorite_on.png);
+
 }
