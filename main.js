@@ -26,7 +26,7 @@ app.on('ready', function() {
                                         "overlay-scrollbars": true
                                     }});
     mainWindow.loadUrl('file://' + __dirname + '/index.html');
-    mainWindow.toggleDevTools();
+    //mainWindow.toggleDevTools();
     mainWindow.on('closed', function() {
         mainWindow = null;
     });
