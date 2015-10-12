@@ -12,6 +12,7 @@ class TwitterClient {
 
         this.client.stream('user', {}, (stream) => {
             stream.on('data', (tweet) => {
+                console.log(tweet);
                 if(tweet.text === undefined) {
                     return;
                 }
@@ -19,6 +20,9 @@ class TwitterClient {
             });
             stream.on('error', (err) => {
                 console.log(err);
+            });
+            stream.on('close', () => {
+              init(config);
             });
         });
     }

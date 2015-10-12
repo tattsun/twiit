@@ -20,9 +20,9 @@ export default React.createClass({
         TweetStore.removeChangeListener(this._onChangeFromStore)
     },
     render() {
-        return <div>
+        return <div id="tweetbox">
         <input
-            id="tweetbox"
+            id="tweetinput"
             type="text"
             value={this.state.status}
             onChange={this._onChange}
