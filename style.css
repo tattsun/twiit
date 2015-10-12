@@ -46,6 +46,14 @@ body {
 .tweet .text {
     float: right;
     width: 250;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.tweet .text .handler {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }
 
 .tweet .imageContainer {

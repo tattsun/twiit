@@ -26,13 +26,11 @@ var Tweet = React.createClass({
                       style={imgstyle}>
                   </div>
                 </a>
-
               </div>);
           }
         }
         return <div
                    className="tweet"
-                   onClick={this._onClick}
                >
             <div className="profile-pic">
             <img
@@ -42,6 +40,9 @@ var Tweet = React.createClass({
             <div className="text">
                 <b>{this.props.user.name}</b>:
                            {this.props.tweet.text}
+            <div className="handler">
+              <span onClick={this._onClick}>Reply</span>
+            </div>
             </div>
             {media}
         </div>

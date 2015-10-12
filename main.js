@@ -47,7 +47,11 @@ app.on('ready', function() {
         { label: "Copy", accelerator: "Command+C", selector: "copy:" },
         { label: "Paste", accelerator: "Command+V", selector: "paste:" },
         { label: "Select All", accelerator: "Command+A", selector: "selectAll:" }
-    ]}
+    ]}, {
+      label: "Development",
+      submenu: [
+        { label: "DevConsole", click: () => mainWindow.toggleDevTools() }
+      ]}
     ];
 
     Menu.setApplicationMenu(Menu.buildFromTemplate(template));
