@@ -11,6 +11,20 @@ var Tweet = React.createClass({
         return {}
     },
     render() {
+        var media = [];
+        if (this.props.tweet.entities.media !== undefined) {
+          for (var m of this.props.tweet.entities.media) {
+            media.push(
+              <div className="imageContainer">
+                <div className="imageBackground">
+                <a href={m.media_url} target="_blank">
+                <img src={m.media_url}
+                  className="image"/>
+                </a>
+              </div>
+              </div>);
+          }
+        }
         return <div
                    className="tweet"
                    onClick={this._onClick}
@@ -24,9 +38,11 @@ var Tweet = React.createClass({
                 <b>{this.props.user.name}</b>:
                            {this.props.tweet.text}
             </div>
+            {media}
         </div>
     },
     _onClick() {
+        console.log(this.props.tweet);
         var tweetbox = document.getElementById('tweetbox');
         if (tweetbox != null) {
             tweetbox.focus();

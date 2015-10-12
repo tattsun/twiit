@@ -47,3 +47,19 @@ body {
     float: right;
     width: 250;
 }
+
+.tweet .imageContainer {
+  clear: both;
+  padding: 10px;
+  width: 284px;
+  height: 100px;
+  display: block;
+}
+
+.tweet .imageBackground {
+}
+
+.tweet .image {
+  max-width: 264px;
+  height: auto;
+}
