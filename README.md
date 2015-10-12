@@ -1,6 +1,6 @@
 # twiit
 
-![twiit](https://raw.github.com/wiki/tattsun/twiit/images/twiit.gif)
+![twiit](https://raw.githubusercontent.com/tattsun/twiit/master/images/twiit.gif)
 
 **not production ready now**
 
