@@ -37,13 +37,20 @@ var TweetText = React.createClass({
     reactPropTypes: {
         userName: ReactPropTypes.string,
         tweetText: ReactPropTypes.string,
-        onClickReply: ReactPropTypes.func
+        onClickReply: ReactPropTypes.func,
+        onClickFavorite: ReactPropTypes.func,
+        onClickRetweet: ReactPropTypes.func
     },
     render() {
         return <div className="text">
             <span><b>{this.props.userName}</b>: {this.props.tweetText}</span>
             <div className="handler">
-                <span onClick={this.props.onClickReply}>Reply</span>
+                <span className="button button-reply"
+                      onClick={this.props.onClickReply}></span>
+                <span className="button button-retweet"
+                      onClick={this.props.onClickRetweet}></span>
+                <span className="button button-favorite"
+                      onClick={this.props.onClickFavorite}></span>
             </div>
         </div>
     }
@@ -65,11 +72,11 @@ var RetweetedTweet = React.createClass({
                 <ProfilePic imageUrl={this.props.sourceUser.profile_image_url} />
                 <TweetText userName={this.props.sourceUser.name}
                            tweetText={this.props.sourceTweet.text}
-                           onClickReply={this._onClick} />
+                           onClickReply={this._onClickReply} />
             </div>
         </div>
     },
-    _onClick() {
+    _onClickReply() {
         var tweetbox = document.getElementById('tweetbox');
         if (tweetbox != null) {
             tweetbox.focus();
@@ -96,11 +103,11 @@ var Tweet = React.createClass({
             <ProfilePic imageUrl={this.props.user.profile_image_url} />
             <TweetText userName={this.props.user.name}
                        tweetText={this.props.tweet.text}
-                       onClickReply={this._onClick} />
+                       onClickReply={this._onClickReply} />
             {media}
         </div>
     },
-    _onClick() {
+    _onClickReply() {
         console.log(this.props.tweet);
         var tweetbox = document.getElementById('tweetbox');
         if (tweetbox != null) {
@@ -133,7 +140,6 @@ export default React.createClass({
         switch(this.props.ev.type) {
             case TweetTypeConstants.TWEET:
                 if(this.props.ev.tweet.retweeted_status === undefined) {
-                    console.log("OK");
                     eventView = <Tweet user={this.props.ev.tweet.user}
                                        tweet={this.props.ev.tweet} />;
                 } else {

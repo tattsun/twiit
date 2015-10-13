@@ -94,6 +94,33 @@ body {
   background-image: url(./img/favorite_on.png);
 }
 
+.button {
+  width: 16px;
+  height: 16px;
+  padding-left: 20px;
+  display: inline;
+  background-repeat: no-repeat;
+}
+
+.button.button-reply {
+    background-image: url(./img/reply.png);
+}
+.button.button-reply:hover {
+    background-image: url(./img/reply_hover.png);
+}
+.button.button-favorite {
+    background-image: url(./img/favorite.png);
+}
+.button.button-favorite:hover {
+    background-image: url(./img/favorite_hover.png);
+}
+.button.button-retweet {
+    background-image: url(./img/retweet.png);
+}
+.button.button-retweet:hover {
+    background-image: url(./img/retweet_hover.png);
+}
+
 .retweetAnnotation {
     font-size: 0.8em;
     font-style: italic;
