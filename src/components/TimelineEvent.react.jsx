@@ -43,7 +43,7 @@ var TweetText = React.createClass({
     },
     render() {
         return <div className="text">
-            <span><b>{this.props.userName}</b>: {this.props.tweetText}</span>
+            <span><b>{this.props.userName}</b>: {this._linkUrls(this.props.tweetText)}</span>
             <div className="handler">
                 <span className="button button-reply"
                       onClick={this.props.onClickReply}></span>
@@ -53,6 +53,18 @@ var TweetText = React.createClass({
                       onClick={this.props.onClickFavorite}></span>
             </div>
         </div>
+    },
+    _linkUrls(text) {
+        var urls = text.match(/(https?:\/\/[a-zA-Z0-9\-_\.:@!~*'\(¥);\/?&=\+$,%#]+)/gm, '<a href="$1">$1</a>');
+        var text = text.replace(/(https?:\/\/[a-zA-Z0-9\-_\.:@!~*'\(¥);\/?&=\+$,%#]+)/gm, '');
+        var component = [];
+        component.push(<span>{text}</span>);
+        if(urls !== null) {
+            for(var url of urls) {
+                component.push(<a href={url} target="_blank">{url}</a>);
+            }
+        }
+        return component;
     }
 })
 

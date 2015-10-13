@@ -9,6 +9,19 @@ body {
     color: #FFF7DB;
 }
 
+a {
+    text-decoration: none;
+    color: #A38A62;
+}
+a:hover {
+    text-decoration: none;
+    color: #E3C089;
+}
+a:visited {
+    text-decoration: none;
+    color: #594B36;
+}
+
 #tweetbox {
   background-color: #424039;
   text-align: center;
