@@ -1,6 +1,7 @@
 import React from 'react'
 import TweetTypeConstants from '../constants/TweetTypeConstants'
 import TweetActions from '../actions/TweetActions'
+import Shell from 'shell'
 var ReactPropTypes = React.PropTypes;
 
 var Media = React.createClass({
@@ -61,10 +62,15 @@ var TweetText = React.createClass({
         component.push(<span>{text}</span>);
         if(urls !== null) {
             for(var url of urls) {
-                component.push(<a href={url} target="_blank">{url}</a>);
+                component.push(<a onClick={this._openUrl(url)}>{url}</a>);
             }
         }
         return component;
+    },
+    _openUrl(url) {
+        return () => {
+            Shell.openExternal(url);
+        };
     }
 })
 
