@@ -38,6 +38,11 @@ app.on('ready', function() {
         { type: "separator" },
         { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
     ]}, {
+      "label": "View",
+      submenu: [
+        { label: "Reload", accelerator: "Command+R", click: () => mainWindow.reload() }
+      ]
+    },{
     label: "Edit",
     submenu: [
         { label: "Undo", accelerator: "Command+Z", selector: "undo:" },

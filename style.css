@@ -92,5 +92,9 @@ body {
 
 .icon.icon-favorite-on {
   background-image: url(./img/favorite_on.png);
+}
 
+.retweetAnnotation {
+    font-size: 0.8em;
+    font-style: italic;
 }
