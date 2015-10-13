@@ -16,10 +16,12 @@ export default React.createClass({
         return getTimelineState()
     },
     componentDidMount() {
-        TimelineStore.addChangeListener(this._onChange)
+        TimelineStore.addChangeListener(this._onChange);
+        document.addEventListener("scrollOnTop", this._onChange);
     },
     componentWillUnmount() {
-        TimelineStore.removeChangeListener(this._onChange)
+        TimelineStore.removeChangeListener(this._onChange);
+        document.removeEventListener("scrollOnTop", this._onChange);
     },
     render() {
         var timeline = [];
@@ -32,6 +34,8 @@ export default React.createClass({
         </div>
     },
     _onChange() {
-        this.setState(getTimelineState())
+        if(window.scrollY === 0) {
+            this.setState(getTimelineState());
+        }
     }
 });

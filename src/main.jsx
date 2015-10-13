@@ -18,6 +18,14 @@ TwitterClient.init({
     access_token_secret: config['access_token_secret']
 });
 
+export var scrollOnTop = document.createEvent("CustomEvent");
+scrollOnTop.initEvent("scrollOnTop", true, false);
+window.addEventListener("scroll", () => {
+    if (window.scrollY === 0) {
+        document.dispatchEvent(scrollOnTop);
+    }
+});
+
 const Main = React.createClass({
     render() {
         return <div>
