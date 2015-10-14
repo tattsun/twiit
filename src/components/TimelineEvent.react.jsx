@@ -52,13 +52,6 @@ var ProfilePic = React.createClass({
     }
 });
 
-function getTweetTextState(id_str) {
-    return {
-        isFavorited: ActionHistoryStore.isFavoritedTweetId(id_str),
-        isRetweeted: ActionHistoryStore.isRetweetedTweetId(id_str),
-    }
-}
-
 var TweetText = React.createClass({
     reactPropTypes: {
         tweet: ReactPropTypes.object.isRequired,
@@ -66,25 +59,16 @@ var TweetText = React.createClass({
         tweetText: ReactPropTypes.string,
         onClickReply: ReactPropTypes.func,
         onClickFavorite: ReactPropTypes.func,
-        onClickRetweet: ReactPropTypes.func
-    },
-    getInitialState() {
-        return getTweetTextState(getTweetTextState(this.props.tweet.id_str));
-    },
-    coemponentDidMount() {
-        ActionHistoryStore.addChangeListener(this._onChange);
-    },
-    componentWillUnmount() {
-        ActionHistoryStore.removeChangeListener(this._onChange);
-    },
-    _onChange() {
-        console.log("onchange");
-        this.setState(getTweetTextState(this.props.tweet.id_str));
+        onClickRetweet: ReactPropTypes.func,
+        favoritedTweetIds: ReactPropTypes.array,
+        retweetedTweetIds: ReactPropTypes.array
     },
     render() {
-        var favorite_btn_class = "button button-favorite";
-        if (this.state.isFavorited) {
-            favorite_btn_class = "button button-favorite-on";
+        var favoriteButtonClass = "button button-favorite";
+        for(var id of this.props.favoritedTweetIds) {
+            if (id === this.props.tweet.id_str) {
+                favoriteButtonClass = "button button-favorite-on";
+            }
         }
 
         return <div className="text">
@@ -94,7 +78,7 @@ var TweetText = React.createClass({
                       onClick={this.props.onClickReply}></span>
                 <span className="button button-retweet"
                       onClick={this.props.onClickRetweet}></span>
-                <span className={favorite_btn_class}
+                <span className={favoriteButtonClass}
                       onClick={this.props.onClickFavorite}></span>
             </div>
         </div>
@@ -123,7 +107,9 @@ var RetweetedTweet = React.createClass({
         user: ReactPropTypes.object,
         sourceUser: ReactPropTypes.object,
         sourceTweet: ReactPropTypes.object,
-        tweetHandler: ReactPropTypes.object
+        tweetHandler: ReactPropTypes.object,
+        favoritedTweetIds: ReactPropTypes.array,
+        retweetedTweetIds: ReactPropTypes.array
     },
     getInitialState() {
         return {}
@@ -139,7 +125,9 @@ var RetweetedTweet = React.createClass({
                            onClickReply={this.props.tweetHandler.onClickReply(
                                          this.props.sourceTweet, this.props.sourceUser)}
                            onClickFavorite={this.props.tweetHandler.onClickFavorite(
-                                            this.props.sourceTweet)} />
+                                            this.props.sourceTweet)}
+                           favoritedTweetIds={this.props.favoritedTweetIds}
+                           retweetedTweetIds={this.props.retweetedTweetIds} />
                 <Medium medium={this.props.sourceTweet.entities.media} />
             </div>
         </div>
@@ -150,7 +138,9 @@ var Tweet = React.createClass({
     propType: {
         tweet: ReactPropTypes.object,
         user: ReactPropTypes.object,
-        tweetHandler: ReactPropTypes.object
+        tweetHandler: ReactPropTypes.object,
+        favoritedTweetIds: ReactPropTypes.array,
+        retweetedTweetIds: ReactPropTypes.array
     },
     getInitialState() {
         return {}
@@ -164,7 +154,9 @@ var Tweet = React.createClass({
                        onClickReply={this.props.tweetHandler.onClickReply(
                                      this.props.tweet, this.props.user)}
                        onClickFavorite={this.props.tweetHandler.onClickFavorite(
-                                        this.props.tweet)} />
+                                        this.props.tweet)}
+                       favoritedTweetIds={this.props.favoritedTweetIds}
+                       retweetedTweetIds={this.props.retweetedTweetIds} />
             <Medium medium={this.props.tweet.entities.media} />
         </div>
     }
@@ -186,7 +178,9 @@ var Favorite = React.createClass({
 
 export default React.createClass({
     propType: {
-        ev: ReactPropTypes.object
+        ev: ReactPropTypes.object,
+        favoritedTweetIds: ReactPropTypes.array,
+        RetweetedTweetIds: ReactPropTypes.array
     },
     render() {
         var eventView = null;
@@ -195,13 +189,17 @@ export default React.createClass({
                 if(this.props.ev.tweet.retweeted_status === undefined) {
                     eventView = <Tweet user={this.props.ev.tweet.user}
                                        tweet={this.props.ev.tweet}
-                                       tweetHandler={this._tweetHandler} />;
+                                       tweetHandler={this._tweetHandler}
+                                       favoritedTweetIds={this.props.favoritedTweetIds}
+                                       retweetedTweetIds={this.props.retweetedTweetIds} />;
                 } else {
 
                     eventView = <RetweetedTweet user={this.props.ev.tweet.user}
                                                 sourceUser={this.props.ev.tweet.retweeted_status.user}
                                                 sourceTweet={this.props.ev.tweet.retweeted_status}
-                                                tweetHandler={this._tweetHandler} />;
+                                                tweetHandler={this._tweetHandler}
+                                                favoritedTweetIds={this.props.favoritedTweetIds}
+                                                retweetedTweetIds={this.props.retweetedTweetIds} />;
                 }
                 break;
             case TweetTypeConstants.FAVORITE:
@@ -224,10 +222,15 @@ export default React.createClass({
                     tweetbox.focus();
                 }
                 window.scroll(0,0);
-                TweetActions.setReplyTarget(tweet.id,user.screen_name);
+                Tweetactions.setReplyTarget(tweet.id,user.screen_name);
             }},
         onClickFavorite(tweet) {
             return () => {
+                if(ActionHistoryStore.isFavoritedTweetId(tweet.id_str)) {
+                    TwitterClient.unfavorite(tweet.id_str);
+                    ActionHistoryActions.removeFavoritedTweetId(tweet.id_str);
+                    return;
+                }
                 TwitterClient.favorite(tweet.id_str);
                 ActionHistoryActions.addFavoritedTweetId(tweet.id_str);
             }

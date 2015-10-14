@@ -11,10 +11,13 @@ var retweetedTweetIds = [];
 class ActionHistoryStore extends EventEmitter {
     // Favorited Tweets
     isFavoritedTweetId(id) {
-        for(var i in favoritedTweetIds) {
+        for(var i of favoritedTweetIds) {
             if (i === id) return true;
         }
         return false;
+    }
+    getFavoritedTweetIds() {
+        return favoritedTweetIds;
     }
     addFavoritedTweetId(id) {
         favoritedTweetIds.push(id);
@@ -30,10 +33,13 @@ class ActionHistoryStore extends EventEmitter {
 
     // Retweeted Tweets
     isRetweetedTweetId(id) {
-        for(var i in retweetedTweetIds) {
+        for(var i of retweetedTweetIds) {
             if (i === id) return true;
         }
         return false;
+    }
+    getRetweetedTweetIds() {
+        return retweetedTweetIds;
     }
     addRetweetedTweetId(id) {
         retweetedTweetIds.push(id);

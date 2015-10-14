@@ -127,6 +127,9 @@ a:visited {
 .button.button-favorite:hover {
     background-image: url(./img/favorite_hover.png);
 }
+.button.button-favorite-on {
+    background-image: url(./img/favorite_on.png);
+}
 .button.button-retweet {
     background-image: url(./img/retweet.png);
 }
