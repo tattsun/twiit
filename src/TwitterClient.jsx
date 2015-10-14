@@ -52,6 +52,17 @@ class TwitterClient {
                              }
                          });
     }
+
+    favorite(status_id) {
+        console.log(status_id);
+        this.client.post('favorites/create', {id: status_id},
+                         (err, tweet, response) => {
+                             if(err) {
+                                 console.error(err);
+                             }
+                         }
+        );
+    }
 }
 
 const client = new TwitterClient()

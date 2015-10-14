@@ -2,6 +2,7 @@ import React from 'react'
 import TweetTypeConstants from '../constants/TweetTypeConstants'
 import TweetActions from '../actions/TweetActions'
 import Shell from 'shell'
+import TwitterClient from '../TwitterClient'
 var ReactPropTypes = React.PropTypes;
 
 var Media = React.createClass({
@@ -107,7 +108,9 @@ var RetweetedTweet = React.createClass({
                 <TweetText userName={this.props.sourceUser.name}
                            tweetText={this.props.sourceTweet.text}
                            onClickReply={this.props.tweetHandler.onClickReply(
-                                         this.props.sourceTweet, this.props.sourceUser)} />
+                                         this.props.sourceTweet, this.props.sourceUser)}
+                           onClickFavorite={this.props.tweetHandler.onClickFavorite(
+                                            this.props.sourceTweet)} />
                 <Medium medium={this.props.sourceTweet.entities.media} />
             </div>
         </div>
@@ -129,7 +132,9 @@ var Tweet = React.createClass({
             <TweetText userName={this.props.user.name}
                        tweetText={this.props.tweet.text}
                        onClickReply={this.props.tweetHandler.onClickReply(
-                                     this.props.tweet, this.props.user)} />
+                                     this.props.tweet, this.props.user)}
+                       onClickFavorite={this.props.tweetHandler.onClickFavorite(
+                                        this.props.tweet)} />
             <Medium medium={this.props.tweet.entities.media} />
         </div>
     }
@@ -190,6 +195,11 @@ export default React.createClass({
                 }
                 window.scroll(0,0);
                 TweetActions.setReplyTarget(tweet.id,user.screen_name);
-            }}
+            }},
+        onClickFavorite(tweet) {
+            return () => {
+                TwitterClient.favorite(tweet.id_str);
+            }
+        }
     }
 });
