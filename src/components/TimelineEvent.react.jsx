@@ -93,7 +93,8 @@ var RetweetedTweet = React.createClass({
     propType: {
         user: ReactPropTypes.object,
         sourceUser: ReactPropTypes.object,
-        sourceTweet: ReactPropTypes.object
+        sourceTweet: ReactPropTypes.object,
+        tweetHandler: ReactPropTypes.object
     },
     getInitialState() {
         return {}
@@ -105,24 +106,19 @@ var RetweetedTweet = React.createClass({
                 <ProfilePic imageUrl={this.props.sourceUser.profile_image_url} />
                 <TweetText userName={this.props.sourceUser.name}
                            tweetText={this.props.sourceTweet.text}
-                           onClickReply={this._onClickReply} />
+                           onClickReply={this.props.tweetHandler.onClickReply(
+                                         this.props.sourceTweet, this.props.sourceUser)} />
                 <Medium medium={this.props.sourceTweet.entities.media} />
             </div>
         </div>
-    },
-    _onClickReply() {
-        var tweetbox = document.getElementById('tweetbox');
-        if (tweetbox != null) {
-            tweetbox.focus();
-        }
-        window.scroll(0,0);
-        TweetActions.setReplyTarget(this.props.sourceTweet.id, this.props.sourceUser.screen_name);
     }
 });
 
 var Tweet = React.createClass({
     propType: {
-        user: ReactPropTypes.object
+        tweet: ReactPropTypes.object,
+        user: ReactPropTypes.object,
+        tweetHandler: ReactPropTypes.object
     },
     getInitialState() {
         return {}
@@ -132,18 +128,10 @@ var Tweet = React.createClass({
             <ProfilePic imageUrl={this.props.user.profile_image_url} />
             <TweetText userName={this.props.user.name}
                        tweetText={this.props.tweet.text}
-                       onClickReply={this._onClickReply} />
+                       onClickReply={this.props.tweetHandler.onClickReply(
+                                     this.props.tweet, this.props.user)} />
             <Medium medium={this.props.tweet.entities.media} />
         </div>
-    },
-    _onClickReply() {
-        console.log(this.props.tweet);
-        var tweetbox = document.getElementById('tweetbox');
-        if (tweetbox != null) {
-            tweetbox.focus();
-        }
-        window.scroll(0,0);
-        TweetActions.setReplyTarget(this.props.tweet.id,this.props.user.screen_name);
     }
 })
 
@@ -171,12 +159,14 @@ export default React.createClass({
             case TweetTypeConstants.TWEET:
                 if(this.props.ev.tweet.retweeted_status === undefined) {
                     eventView = <Tweet user={this.props.ev.tweet.user}
-                                       tweet={this.props.ev.tweet} />;
+                                       tweet={this.props.ev.tweet}
+                                       tweetHandler={this._tweetHandler} />;
                 } else {
 
                     eventView = <RetweetedTweet user={this.props.ev.tweet.user}
                                                 sourceUser={this.props.ev.tweet.retweeted_status.user}
-                                                sourceTweet={this.props.ev.tweet.retweeted_status} />;
+                                                sourceTweet={this.props.ev.tweet.retweeted_status}
+                                                tweetHandler={this._tweetHandler} />;
                 }
                 break;
             case TweetTypeConstants.FAVORITE:
@@ -189,5 +179,17 @@ export default React.createClass({
         return <div className="timelineEvent">
         {eventView}
         </div>;
+    },
+    _tweetHandler: {
+        onClickReply(tweet, user) {
+            return () => {
+                console.log(tweet);
+                var tweetbox = document.getElementById('tweetbox');
+                if (tweetbox != null) {
+                    tweetbox.focus();
+                }
+                window.scroll(0,0);
+                TweetActions.setReplyTarget(tweet.id,user.screen_name);
+            }}
     }
 });
