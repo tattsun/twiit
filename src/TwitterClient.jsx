@@ -1,5 +1,6 @@
 import Twitter from 'twitter'
 import TwiitActions from './actions/TwiitActions'
+import ActionHistoryActions from './actions/ActionHistoryActions'
 
 class TwitterClient {
     init(config) {
@@ -17,6 +18,14 @@ class TwitterClient {
           for(var tweet of tweets) {
               TwiitActions.add(tweet);
           }
+        });
+
+        this.client.get('favorites/list', {count: 30}, (error, tweets, response) => {
+            if(tweets === null) return;
+
+            for(var tweet of tweets) {
+                ActionHistoryActions.addFavoritedTweetId(tweet.id_str);
+            }
         });
 
         this.initStream();
