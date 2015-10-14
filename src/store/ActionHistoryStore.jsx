@@ -1,5 +1,5 @@
 import Dispatcher from '../dispatcher/AppDispatcher'
-import ActionHistoryConstants '../constants/ActionHistoryConstants'
+import ActionHistoryConstants from '../constants/ActionHistoryConstants'
 import Events from 'events'
 
 const EventEmitter = Events.EventEmitter;
@@ -11,18 +11,40 @@ var retweetedTweetIds = [];
 class ActionHistoryStore extends EventEmitter {
     // Favorited Tweets
     isFavoritedTweetId(id) {
+        for(var i in favoritedTweetIds) {
+            if (i === id) return true;
+        }
+        return false;
     }
     addFavoritedTweetId(id) {
+        favoritedTweetIds.push(id);
+        this.emitChange();
     }
     removeFavoritedTweetId(id) {
+        var i = favoritedTweetIds.indexOf(id);
+        if(i != -1) {
+            favoritedTweetIds.splice(i, 1);
+            this.emitChange();
+        }
     }
 
     // Retweeted Tweets
     isRetweetedTweetId(id) {
+        for(var i in retweetedTweetIds) {
+            if (i === id) return true;
+        }
+        return false;
     }
     addRetweetedTweetId(id) {
+        retweetedTweetIds.push(id);
+        this.emitChange();
     }
     removeRetweetedTweetId(id) {
+        var i = retweetedTweetIds.indexOf(id);
+        if(i != 1) {
+            retweetedTweetIds.splice(i, 1);
+            this.emitChange();
+        }
     }
 
     emitChange() {
@@ -43,5 +65,18 @@ export default store;
 
 Dispatcher.register((action) => {
     switch(action.actionType) {
+        case ActionHistoryConstants.ADD_FAVORITED:
+            store.addFavoritedTweetId(action.id);
+            break;
+        case ActionHistoryConstants.REMOVE_FAVORITED:
+            store.removeFavoritedTweetId(action.id);
+            break;
+        case ActionHistoryConstants.ADD_RETWEETED:
+            store.addRetweetedTweetId(action.id);
+            break;
+        case ActionHistoryConstants.REMOVE_RETWEETED:
+            store.removeRetweetedTweetId(action.id);
+            break;
+        default:
     }
 });

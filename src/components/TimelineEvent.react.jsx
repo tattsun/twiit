@@ -3,6 +3,8 @@ import TweetTypeConstants from '../constants/TweetTypeConstants'
 import TweetActions from '../actions/TweetActions'
 import Shell from 'shell'
 import TwitterClient from '../TwitterClient'
+import ActionHistoryActions from '../actions/ActionHistoryActions'
+import ActionHistoryStore from '../store/ActionHistoryStore'
 var ReactPropTypes = React.PropTypes;
 
 var Media = React.createClass({
@@ -50,15 +52,41 @@ var ProfilePic = React.createClass({
     }
 });
 
+function getTweetTextState(id_str) {
+    return {
+        isFavorited: ActionHistoryStore.isFavoritedTweetId(id_str),
+        isRetweeted: ActionHistoryStore.isRetweetedTweetId(id_str),
+    }
+}
+
 var TweetText = React.createClass({
     reactPropTypes: {
+        tweet: ReactPropTypes.object.isRequired,
         userName: ReactPropTypes.string,
         tweetText: ReactPropTypes.string,
         onClickReply: ReactPropTypes.func,
         onClickFavorite: ReactPropTypes.func,
         onClickRetweet: ReactPropTypes.func
     },
+    getInitialState() {
+        return getTweetTextState(getTweetTextState(this.props.tweet.id_str));
+    },
+    coemponentDidMount() {
+        ActionHistoryStore.addChangeListener(this._onChange);
+    },
+    componentWillUnmount() {
+        ActionHistoryStore.removeChangeListener(this._onChange);
+    },
+    _onChange() {
+        console.log("onchange");
+        this.setState(getTweetTextState(this.props.tweet.id_str));
+    },
     render() {
+        var favorite_btn_class = "button button-favorite";
+        if (this.state.isFavorited) {
+            favorite_btn_class = "button button-favorite-on";
+        }
+
         return <div className="text">
             <span><b>{this.props.userName}</b>: {this._linkUrls(this.props.tweetText)}</span>
             <div className="handler">
@@ -66,7 +94,7 @@ var TweetText = React.createClass({
                       onClick={this.props.onClickReply}></span>
                 <span className="button button-retweet"
                       onClick={this.props.onClickRetweet}></span>
-                <span className="button button-favorite"
+                <span className={favorite_btn_class}
                       onClick={this.props.onClickFavorite}></span>
             </div>
         </div>
@@ -105,7 +133,8 @@ var RetweetedTweet = React.createClass({
             <span className="retweetAnnotation">{this.props.user.name} Retweeted:</span>
             <div className="tweet">
                 <ProfilePic imageUrl={this.props.sourceUser.profile_image_url} />
-                <TweetText userName={this.props.sourceUser.name}
+                <TweetText tweet={this.props.sourceTweet}
+                           userName={this.props.sourceUser.name}
                            tweetText={this.props.sourceTweet.text}
                            onClickReply={this.props.tweetHandler.onClickReply(
                                          this.props.sourceTweet, this.props.sourceUser)}
@@ -129,7 +158,8 @@ var Tweet = React.createClass({
     render() {
         return <div className="tweet">
             <ProfilePic imageUrl={this.props.user.profile_image_url} />
-            <TweetText userName={this.props.user.name}
+            <TweetText tweet={this.props.tweet}
+                       userName={this.props.user.name}
                        tweetText={this.props.tweet.text}
                        onClickReply={this.props.tweetHandler.onClickReply(
                                      this.props.tweet, this.props.user)}
@@ -199,6 +229,7 @@ export default React.createClass({
         onClickFavorite(tweet) {
             return () => {
                 TwitterClient.favorite(tweet.id_str);
+                ActionHistoryActions.addFavoritedTweetId(tweet.id_str);
             }
         }
     }
