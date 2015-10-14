@@ -23,6 +23,21 @@ var Media = React.createClass({
     }
 });
 
+var Medium = React.createClass({
+    propType: {
+        medium: ReactPropTypes.array
+    },
+    render() {
+        var view = [];
+        if (this.props.medium !== undefined) {
+            for(var m of this.props.medium) {
+                view.push(<Media media={m} />);
+            }
+        }
+        return <div>{view}</div>;
+    }
+});
+
 var ProfilePic = React.createClass({
     reactPropTypes: {
         imageUrl: ReactPropTypes.string
@@ -91,6 +106,7 @@ var RetweetedTweet = React.createClass({
                 <TweetText userName={this.props.sourceUser.name}
                            tweetText={this.props.sourceTweet.text}
                            onClickReply={this._onClickReply} />
+                <Medium medium={this.props.sourceTweet.entities.media} />
             </div>
         </div>
     },
@@ -99,6 +115,7 @@ var RetweetedTweet = React.createClass({
         if (tweetbox != null) {
             tweetbox.focus();
         }
+        window.scroll(0,0);
         TweetActions.setReplyTarget(this.props.sourceTweet.id, this.props.sourceUser.screen_name);
     }
 });
@@ -111,18 +128,12 @@ var Tweet = React.createClass({
         return {}
     },
     render() {
-        var media = [];
-        if (this.props.tweet.entities.media !== undefined) {
-          for (var m of this.props.tweet.entities.media) {
-              media.push(<Media media={m} />)
-          }
-        }
         return <div className="tweet">
             <ProfilePic imageUrl={this.props.user.profile_image_url} />
             <TweetText userName={this.props.user.name}
                        tweetText={this.props.tweet.text}
                        onClickReply={this._onClickReply} />
-            {media}
+            <Medium medium={this.props.tweet.entities.media} />
         </div>
     },
     _onClickReply() {
@@ -131,6 +142,7 @@ var Tweet = React.createClass({
         if (tweetbox != null) {
             tweetbox.focus();
         }
+        window.scroll(0,0);
         TweetActions.setReplyTarget(this.props.tweet.id,this.props.user.screen_name);
     }
 })

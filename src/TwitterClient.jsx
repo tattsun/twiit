@@ -10,7 +10,7 @@ class TwitterClient {
             access_token_secret: config.access_token_secret
         });
 
-        this.client.get('statuses/home_timeline', {count: 10}, (error, tweets, response) => {
+        this.client.get('statuses/home_timeline', {count: 30}, (error, tweets, response) => {
           if (tweets === null) return;
 
           tweets.reverse();
