@@ -59,5 +59,6 @@ Temporary Items
 
 # Twiit
 twiit-darwin-x64
+twiit-*
 config.yml
 build/
