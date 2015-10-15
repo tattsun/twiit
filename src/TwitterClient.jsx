@@ -11,16 +11,20 @@ class TwitterClient {
             access_token_secret: config.access_token_secret
         });
 
-        this.client.get('statuses/home_timeline', {count: 30}, (error, tweets, response) => {
-          if (tweets === null) return;
+        this.client.get('statuses/home_timeline', {count: 10}, (error, tweets) => {
+            if (error !== null) {
+                console.error(error);
+            }
+            if (tweets === null) return;
 
-          tweets.reverse();
-          for(var tweet of tweets) {
-              TwiitActions.add(tweet);
-          }
+            tweets.reverse();
+
+            for(var tweet of tweets) {
+                TwiitActions.add(tweet);
+            }
         });
 
-        this.client.get('favorites/list', {count: 30}, (error, tweets, response) => {
+        this.client.get('favorites/list', {count: 30}, (error, tweets) => {
             if(tweets === null) return;
 
             for(var tweet of tweets) {
@@ -32,24 +36,24 @@ class TwitterClient {
     }
 
     initStream() {
-      this.client.stream('user', {}, (stream) => {
-          stream.on('data', (tweet) => {
-              console.log(tweet);
-              if(tweet.text === undefined) {
-                  return;
-              }
-              TwiitActions.add(tweet);
-          });
-          stream.on('favorite', (fav) => {
-            TwiitActions.addFavorite(fav);
-          });
-          stream.on('error', (err) => {
-              console.log(err);
-          });
-          stream.on('end', () => {
-            this.initStream();
-          });
-      });
+        this.client.stream('user', {}, (stream) => {
+            stream.on('data', (tweet) => {
+                console.log(tweet);
+                if(tweet.text === undefined) {
+                    return;
+                }
+                TwiitActions.add(tweet);
+            });
+            stream.on('favorite', (fav) => {
+                TwiitActions.addFavorite(fav);
+            });
+            stream.on('error', (err) => {
+                console.log(err);
+            });
+            stream.on('end', () => {
+                this.initStream();
+            });
+        });
     }
 
     tweet(status, in_reply_to_status_id) {
@@ -81,4 +85,4 @@ class TwitterClient {
 }
 
 const client = new TwitterClient()
-export default client
+    export default client
